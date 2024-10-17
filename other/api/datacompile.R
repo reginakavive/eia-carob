@@ -2,7 +2,8 @@
 ### AUTHOR:
 
 Sys.setenv(HOME="/home/azureuser")
-home_dir <- file.path(Sys.getenv("HOME"),"eia-carob-test")     #eia-carob-test
+# Sys.setenv(HOME="/home/kapivara")
+home_dir <- file.path(Sys.getenv("HOME"), basename(getwd()))
 
 #
 #Install and load required packages
@@ -30,7 +31,7 @@ install_and_load(required_packages)
 # install carobiner
 remotes::install_github("reagro/carobiner", force = TRUE, ask = FALSE, upgrade ="always")
 
-carobiner::update_terms(local_terms=file.path(home_dir,"terms"))
+carobiner:::update_terms(local_terms=file.path(home_dir,"terms"))
 
 #update any changes from repo
 system("git pull")
@@ -39,8 +40,8 @@ system("git pull")
 system("git remote add upstream https://github.com/EiA2030/eia-carob.git")
 system("git fetch upstream")
 system("git checkout main")
-system("git merge upstream/main")
-#system("git push origin main")
+# system("git merge upstream/main")
+# system("git push origin main")
 
 #Compile
 #carobiner::make_carob("/home/jovyan/zKav/CarobK/eia-carob")
@@ -60,7 +61,7 @@ system2("cp", args = c("-r", shQuote(src_folder), shQuote(dest_folder)))
 
 
 #bind metadata files to access uri and usecase_code
-md <- do.call(carobiner::bindr,lapply(paste0(file.path(home_dir,"data/clean/eia"),list.files(file.path(home_dir,"data/clean/eia"), pattern = "_meta")),read.csv))
+md <- do.call(carobiner::bindr,lapply(paste0(file.path(home_dir,"data/clean/eia/"),list.files(file.path(home_dir,"data/clean/eia"), pattern = "_meta")),read.csv))
 write.csv(md, file = file.path(home_dir,"other/api/data/clean/carob_eia_meta.csv"), row.names = FALSE)
 
 

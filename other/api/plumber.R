@@ -16,7 +16,7 @@ function(res, req, eia_code, key) {
     list("404 Not Found")
   } else {
     uri <- md[md$usecase_code == eia_code, "uri"]
-    uu <- read.csv(paste0("./data/clean/eia/", uri, ".csv"))
+    uu <- do.call(carobiner::bindr,lapply(paste0("./data/clean/eia/", uri, ".csv"), read.csv))
   }
 }
 
